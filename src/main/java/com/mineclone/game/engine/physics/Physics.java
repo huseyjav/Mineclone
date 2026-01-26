@@ -31,8 +31,8 @@ public class Physics {
         int start = dx > 0 ? (int)Math.floor(E.getXMax()) : (int)Math.floor(E.getXMin());
         int end = dx > 0 ? (int)Math.floor(dx + E.getXMax()) :  (int)Math.floor(dx + E.getXMin());
             for(int x = start; x != end+increment; x+=increment){
-                for(int y = (int)(E.getYMin()); y <= (int)Math.floor(E.getYMax()); y++){
-                    for(int z = (int)(E.getZMin()); z <= (int)Math.floor(E.getZMax()); z++){
+                for(int y = (int)(E.getYMin()); y < (int)Math.ceil(E.getYMax()); y++){
+                    for(int z = (int)(E.getZMin()); z < (int)Math.ceil(E.getZMax()); z++){
                         if(x<0 || y<0 || z<0) return 0;
                         if(!world.isSolidBlock(x,y,z)) continue;
                         if(dx>0) return Math.min(dx, x - E.getXMax());
@@ -49,12 +49,14 @@ public class Physics {
         int start = dy > 0 ? (int)Math.floor(E.getYMax()) : (int)Math.floor(E.getYMin());
         int end = dy > 0 ? (int)Math.floor(dy + E.getYMax()) :  (int)Math.floor(dy + E.getYMin());
         for(int y = start; y != end+increment; y+=increment){
-            for(int x = (int)(E.getXMin()); x <= (int)Math.floor(E.getXMax()); x++){
-                for(int z = (int)(E.getZMin()); z <= (int)Math.floor(E.getZMax()); z++){
+            for(int x = (int)(E.getXMin()); x < (int)Math.ceil(E.getXMax()); x++){
+                for(int z = (int)(E.getZMin()); z < (int)Math.ceil(E.getZMax()); z++){
                     if(x<0 || y<0 || z<0) return 0;
                     if(!world.isSolidBlock(x,y,z)) continue;
                     if(dy>0) return Math.min(dy, y - E.getYMax());
-                    else return Math.max(dy, (y+1) - E.getYMin());
+                    else {
+                        return Math.max(dy, (y+1) - E.getYMin());
+                    }
                 }
             }
         }
@@ -66,8 +68,8 @@ public class Physics {
         int start = dz > 0 ? (int)Math.floor(E.getZMax()) : (int)Math.floor(E.getZMin());
         int end = dz > 0 ? (int)Math.floor(dz + E.getZMax()) :  (int)Math.floor(dz + E.getZMin());
         for(int z = start; z != end+increment; z+=increment){
-            for(int x = (int)(E.getXMin()); x <= (int)Math.floor(E.getXMax()); x++){
-                for(int y = (int)(E.getYMin()); y <= (int)Math.floor(E.getYMax()); y++){
+            for(int x = (int)(E.getXMin()); x < (int)Math.ceil(E.getXMax()); x++){
+                for(int y = (int)(E.getYMin()); y < (int)Math.ceil(E.getYMax()); y++){
                     if(x<0 || y<0 || z<0) return 0;
                     if(!world.isSolidBlock(x,y,z)) continue;
                     if(dz>0) return Math.min(dz, z - E.getZMax());
