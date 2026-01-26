@@ -1,28 +1,13 @@
 package com.mineclone.game;
 
-import com.mineclone.ShaderHelper;
-import com.mineclone.game.engine.Player;
-import com.mineclone.game.engine.world.Chunk;
+import com.mineclone.game.engine.world.Entity.Player;
 import com.mineclone.game.engine.world.World;
 import com.mineclone.game.renderer.Camera;
 import com.mineclone.game.renderer.WorldRenderer;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GLUtil;
-import org.lwjgl.stb.STBImage;
-import org.lwjgl.system.MemoryStack;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.joml.Math.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL43.*;
-import static org.lwjgl.stb.STBImage.*;
-import static org.lwjgl.system.MemoryStack.stackPush;
 
 
 public class Renderer {

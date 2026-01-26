@@ -1,6 +1,7 @@
 package com.mineclone.game;
 
-import com.mineclone.game.engine.Player;
+import com.mineclone.game.engine.world.Entity.InputComponent;
+import com.mineclone.game.engine.world.Entity.Player;
 import com.mineclone.game.engine.world.World;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -17,37 +18,15 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class Game{
     static public long window=0;
     private Renderer renderer;
-    private Player localPlayer = new Player(new Vector3f(0,0,-10));
+    private Player localPlayer = new Player(new Vector3f(100,80,100), new InputComponent());
     public double timePerTick = 1f/20f;
     public double lastTick = 0f;
     public double previousTick = 0f;
     public double timePassed = 0f;
     World world = new World(localPlayer);
-    private boolean[] keyFlags = new boolean[GLFW_KEY_LAST + 1];
-    class processInput implements GLFWKeyCallbackI{
-        @Override
-        public void invoke(long window, int key, int scancode, int action, int mods) {
-            if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-                glfwSetWindowShouldClose(window, true);
-            if(key < 0 || key > GLFW_KEY_LAST) throw new IndexOutOfBoundsException("key code out of bounds");
-            if(action == GLFW_PRESS)
-                keyFlags[key] = true;
 
-            else if(action == GLFW_RELEASE)
-                keyFlags[key] = false;
 
-        }
-    }
-    private void handleInputs(){
-        if (keyFlags[GLFW_KEY_W])
-            localPlayer.handleForward();
-        if (keyFlags[GLFW_KEY_S])
-            localPlayer.handleBackward();
-        if (keyFlags[GLFW_KEY_A])
-            localPlayer.handleLeft();
-        if (keyFlags[GLFW_KEY_D])
-            localPlayer.handleRight();
-    }
+
     class processCursorPos implements GLFWCursorPosCallbackI{
         double lastX = getWindowSize().x/2, lastY = getWindowSize().y/2;
         @Override
@@ -111,10 +90,10 @@ public class Game{
         glfwMakeContextCurrent(window);
         //  v-sync
         glfwSwapInterval(0);
-        GLFWKeyCallback.create(new processInput()).set(window);
+
         GLFWCursorPosCallback.create(new processCursorPos()).set(window);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
+        InputController.getInstance().setCallback(window);
         // Make the window visible
         glfwShowWindow(window);
     }
@@ -132,8 +111,6 @@ public class Game{
             boolean alreadydone = false;
             while(timePassed >= timePerTick){
                 if(alreadydone) System.out.println("skipped a tick");
-                handleInputs();
-                localPlayer.tick();
                 world.tick();
                 previousTick = lastTick;
                 lastTick = glfwGetTime();

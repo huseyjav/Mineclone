@@ -1,9 +1,8 @@
 package com.mineclone.game.renderer;
 
-import com.mineclone.game.engine.Player;
+import com.mineclone.game.engine.world.Entity.Player;
 import org.joml.*;
 
-import static org.joml.Math.*;
 public class Camera {
     Player followedPlayer;
 
@@ -14,8 +13,8 @@ public class Camera {
     public Matrix4f getViewMatrix(double lerpWeight){
         Matrix4f viewMatrix = new Matrix4f();
         var lerpedPos = new Vector3f();
-        followedPlayer.getLastPosition().lerp(followedPlayer.getCurrentPosition(), (float)lerpWeight,lerpedPos);
-        viewMatrix.lookAt(lerpedPos, followedPlayer.getDirection().add(lerpedPos), new Vector3f(0.0f, 1.0f, 0.0f));
+        followedPlayer.getLastEyePos().lerp(followedPlayer.getCurrentEyePos(), (float)lerpWeight,lerpedPos);
+        viewMatrix.lookAt(lerpedPos, followedPlayer.getDirectionVector().add(lerpedPos), new Vector3f(0.0f, 1.0f, 0.0f));
         return viewMatrix;
     }
 }

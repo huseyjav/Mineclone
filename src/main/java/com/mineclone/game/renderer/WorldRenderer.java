@@ -110,7 +110,7 @@ public class WorldRenderer {
 
         //projection matrix
         Matrix4f projectionMatrix = new Matrix4f();
-        projectionMatrix.setPerspective(toRadians(45.0f), (float) 1920 / 1080, 0.1f, 10000.f);
+        projectionMatrix.setPerspective(toRadians(90.0f), (float) 1920 / 1080, 0.1f, 10000.f);
         projectionMatrix.get(matrixarray);
         transformLoc = glGetUniformLocation(shaders.getProgramID(), "projection");
         glProgramUniformMatrix4fv(shaders.getProgramID(), transformLoc, false, matrixarray);
@@ -126,7 +126,7 @@ public class WorldRenderer {
         for(var entry : world.chunkManager.chunkMap.entrySet()){
 
             Matrix4f modelMatrix = new Matrix4f();
-            modelMatrix.translate(new Vector3f(entry.getKey().x * 16, -128, entry.getKey().z * 16));
+            modelMatrix.translate(new Vector3f(entry.getKey().x * 16, 0, entry.getKey().z * 16));
             modelMatrix.get(matrixarray);
             transformLoc = glGetUniformLocation(shaders.getProgramID(), "model");
             glProgramUniformMatrix4fv(shaders.getProgramID(), transformLoc, false, matrixarray);

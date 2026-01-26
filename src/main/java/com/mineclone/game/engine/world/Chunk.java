@@ -16,7 +16,7 @@ public class Chunk {
         public ArrayList<Float> vertices = new ArrayList<Float>();
         public ArrayList<Integer> indices = new ArrayList<Integer>();
     }
-    Mesh lastBuiltMesh;
+    private Mesh lastBuiltMesh;
     public Chunk(){
         for(int x = 0 ; x < 16 ; x++){
             for(int y = 0; y < 256 ; y++){
@@ -114,8 +114,6 @@ public class Chunk {
             {0.031250f,0.031250f},
             {0.031250f, 0f},
             {0f,0f},
-
-
     };
 
     private void addFace(int x, int y, int z, Faces face){

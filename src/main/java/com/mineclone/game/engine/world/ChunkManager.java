@@ -57,11 +57,18 @@ public class ChunkManager {
         this.rendererToAlert = rendererToAlert;
     }
 
-    public ChunkManager(){
+    public ChunkManager(int chunkX, int chunkZ){
+        World.ChunkPos pos = new World.ChunkPos(chunkX,chunkZ);
+        chunkMap.put(pos, new Chunk(WorldGen.genChunk(3985, chunkX, chunkZ)));
         workerThread.setDaemon(true);
         workerThread.start();
-    }
 
+    }
+    public boolean isSolidBlock(int x, int y, int z){
+        World.ChunkPos chunkPos = new World.ChunkPos(x/Chunk.chunkXSize, z/Chunk.chunkZSize);
+        if(!chunkMap.containsKey(chunkPos)) return true;
+        return chunkMap.get(chunkPos).chunk[x%Chunk.chunkXSize][y][z%Chunk.chunkZSize]!=null;
+    }
     void unloadOutOfBoundsChunks(int chunkX, int chunkZ){
         List<World.ChunkPos> toRemove = new ArrayList<World.ChunkPos>();
         for(var i : chunkMap.entrySet()){

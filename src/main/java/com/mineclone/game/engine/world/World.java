@@ -1,14 +1,9 @@
 package com.mineclone.game.engine.world;
 
-import com.mineclone.game.engine.Player;
-import org.joml.Vector3i;
+import com.mineclone.game.engine.world.Entity.Player;
+import com.mineclone.game.engine.physics.Physics;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-
-import static com.mineclone.game.engine.world.WorldGen.genChunk;
 
 public class World {
     public static class ChunkPos implements Comparable{
@@ -39,12 +34,21 @@ public class World {
         }
     }
     Player localPlayer;
-    public ChunkManager chunkManager = new ChunkManager();
+    public ChunkManager chunkManager;
+    private Physics physics = new Physics(this);
     public World(Player localPlayer){
         this.localPlayer = localPlayer;
+        chunkManager = new ChunkManager((int) (localPlayer.currentPosition.x/Chunk.chunkXSize), (int) (localPlayer.currentPosition.z/Chunk.chunkZSize));
     }
     public void tick(){
+
         chunkManager.tick((int)localPlayer.getCurrentPosition().x/16, (int)localPlayer.getCurrentPosition().z/16);
+        localPlayer.tick();
+        physics.tick(localPlayer);
+    }
+
+    public boolean isSolidBlock(int x, int y, int z){
+        return chunkManager.isSolidBlock(x,y,z);
     }
 
 
