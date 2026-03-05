@@ -1,5 +1,6 @@
 package com.mineclone.game.engine;
 
+import org.joml.Vector3d;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
@@ -26,6 +27,12 @@ public class Utils {
             height[0] = h.get(0);
             channels[0] = c.get(0);
             return image;
+        }
+    }
+    public static void limitVectorLength(Vector3d vec, double absMaxLen){
+        double currentLength = vec.length();
+        if(currentLength>0 && currentLength>absMaxLen){
+            vec.mul(absMaxLen/currentLength);
         }
     }
 

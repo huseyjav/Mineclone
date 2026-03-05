@@ -7,18 +7,24 @@ public class InputComponent {
         player.moveIntent.x=0;
         player.moveIntent.y=0;
         player.moveIntent.z=0;
+        player.wantsJump=false;
         if(InputController.getInstance().getKeyState(GLFW.GLFW_KEY_W)){
-            player.moveIntent.add(player.getDirectionVectorXZ());
+            //player.moveIntent.add(player.getDirectionVectorXZ());
+            player.moveIntent.x++;
         }
         if(InputController.getInstance().getKeyState(GLFW.GLFW_KEY_S)){
-            player.moveIntent.sub(player.getDirectionVectorXZ());
+            //player.moveIntent.sub(player.getDirectionVectorXZ());
+            player.moveIntent.x--;
         }
         if(InputController.getInstance().getKeyState(GLFW.GLFW_KEY_A)){
-            player.moveIntent.sub(player.getRightVector());
+            //player.moveIntent.sub(player.getRightVector());
+            player.moveIntent.z--;
         }
         if(InputController.getInstance().getKeyState(GLFW.GLFW_KEY_D)){
-            player.moveIntent.add(player.getRightVector());
+//            player.moveIntent.add(player.getRightVector());
+            player.moveIntent.z++;
         }
-//        player.moveIntent.normalize();
+        if(InputController.getInstance().getKeyState(GLFW.GLFW_KEY_SPACE)) player.wantsJump = true;
+        if(player.moveIntent.length()!=0) player.moveIntent.normalize();
     }
 }

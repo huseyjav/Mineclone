@@ -12,7 +12,6 @@ import static org.joml.Math.*;
 
 public class Player extends Entity {
 
-    private float yaw = 0f, pitch = 0f;
     private Vector3f up = new Vector3f(0.0f,1.0f,0.0f);
     private Vector3f eyePosOffset = new Vector3f(0.0f, 1.5f, 0.0f);
     double sensitivity = 0.1f;

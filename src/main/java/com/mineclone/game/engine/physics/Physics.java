@@ -1,9 +1,12 @@
 package com.mineclone.game.engine.physics;
 
+import com.mineclone.game.engine.Utils;
 import com.mineclone.game.engine.world.Entity.Entity;
 import com.mineclone.game.engine.world.World;
+import org.joml.Quaterniond;
+import org.joml.Vector3d;
 
-import static java.lang.Math.floor;
+import static java.lang.Math.*;
 
 public class Physics {
     World world;
@@ -12,17 +15,40 @@ public class Physics {
         this.world = world;
     }
 
+    // NOTE: there might be precision errors here due to double comp, but cba fixing them rn, fix them later
     public void tick(Entity ent){
-//        System.out.println(ent.moveIntent);
-        double dx = ent.moveIntent.x * ent.moveSpeed;
+        if(ent.moveIntent.length()==0){
+            // decelerate
+            if(ent.velocity.x<0){
+                ent.velocity.x = Math.min(0, ent.velocity.x + ent.deceleration);
+            }
+            else if(ent.velocity.x>0){
+                ent.velocity.x = Math.max(0, ent.velocity.x - ent.deceleration);
+            }
+            if(ent.velocity.z<0){
+                ent.velocity.z = Math.min(0, ent.velocity.z + ent.deceleration);
+            }
+            else if(ent.velocity.z>0){
+                ent.velocity.z = Math.max(0, ent.velocity.z - ent.deceleration);
+            }
+        }
+        else{
+            // accelerate
+            ent.velocity.x += ent.moveIntent.x * ent.acceleration;
+            ent.velocity.z += ent.moveIntent.z * ent.acceleration;
+            Utils.limitVectorLength(ent.velocity, ent.maxSpeed);
+        }
+
         double dy = 0;
-        double dz = ent.moveIntent.z * ent.moveSpeed;
-        dy-=0.3;
-        ent.currentPosition.x+=sweepX(ent, dx);
-        double returned = sweepY(ent, dy);
-//        System.out.println(returned);
-        ent.currentPosition.y+=returned;
-        ent.currentPosition.z+=sweepZ(ent, dz);
+        if(ent.isGrounded && ent.wantsJump) dy=3;
+        dy-=0.5;
+        Vector3d absoluteVelocity = new Vector3d();
+//        Quaterniond rotation = new Quaterniond();
+        ent.velocity.rotateY(-toRadians(ent.yaw), absoluteVelocity);
+//        absoluteVelocity.rotateY(toRadians(ent.pitch));
+        ent.currentPosition.x+= (float) sweepX(ent, absoluteVelocity.x);
+        ent.currentPosition.y+= (float) sweepY(ent, dy);
+        ent.currentPosition.z+= (float) sweepZ(ent, absoluteVelocity.z);
     }
 
     double sweepX(Entity E, double dx){
@@ -44,7 +70,6 @@ public class Physics {
     }
     double sweepY(Entity E, double dy){
         if(dy == 0) return 0;
-        System.out.println(dy);
         int increment = dy > 0 ? 1 : -1;
         int start = dy > 0 ? (int)Math.floor(E.getYMax()) : (int)Math.floor(E.getYMin());
         int end = dy > 0 ? (int)Math.floor(dy + E.getYMax()) :  (int)Math.floor(dy + E.getYMin());
@@ -53,13 +78,19 @@ public class Physics {
                 for(int z = (int)(E.getZMin()); z < (int)Math.ceil(E.getZMax()); z++){
                     if(x<0 || y<0 || z<0) return 0;
                     if(!world.isSolidBlock(x,y,z)) continue;
-                    if(dy>0) return Math.min(dy, y - E.getYMax());
+                    if(dy>0){
+                        return Math.min(dy, y - E.getYMax());
+                    }
+
                     else {
+                        if(Math.max(dy, (y+1) - E.getYMin())==0) E.isGrounded=true;
+                        else E.isGrounded=false;
                         return Math.max(dy, (y+1) - E.getYMin());
                     }
                 }
             }
         }
+        if(dy>0) E.isGrounded=false;
         return dy;
     }
     double sweepZ(Entity E, double dz){
