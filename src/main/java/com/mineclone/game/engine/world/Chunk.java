@@ -5,6 +5,7 @@ import org.joml.Vector3i;
 
 import java.util.ArrayList;
 import java.util.Vector;
+import com.mineclone.game.renderer.Mesh;
 
 public class Chunk {
     static final int chunkZSize = 16;
@@ -12,10 +13,6 @@ public class Chunk {
     static final int chunkXSize = 16;
     boolean dirty = true;
     BasicBlock[][][] chunk = new BasicBlock[chunkXSize][chunkYSize][chunkZSize];
-    public class Mesh{
-        public ArrayList<Float> vertices = new ArrayList<Float>();
-        public ArrayList<Integer> indices = new ArrayList<Integer>();
-    }
     private Mesh lastBuiltMesh;
     public Chunk(){
         for(int x = 0 ; x < 16 ; x++){

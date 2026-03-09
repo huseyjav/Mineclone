@@ -3,6 +3,7 @@ package com.mineclone.game;
 import com.mineclone.game.engine.world.Entity.Player;
 import com.mineclone.game.engine.world.World;
 import com.mineclone.game.renderer.Camera;
+import com.mineclone.game.renderer.FirstPersonRenderer;
 import com.mineclone.game.renderer.WorldRenderer;
 import org.lwjgl.opengl.GL;
 
@@ -15,6 +16,7 @@ public class Renderer {
     private long window;
     private Camera camera;
     private WorldRenderer worldRenderer;
+    private FirstPersonRenderer firstPersonrenderer;
     int textureAtlasID;
 
     private World world;
@@ -28,6 +30,7 @@ public class Renderer {
         this.window = window;
         this.world = world;
         this.worldRenderer = new WorldRenderer(world, camera);
+        this.firstPersonrenderer = new FirstPersonRenderer(followedPlayer);
         glEnable(GL_DEPTH_TEST);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
@@ -40,7 +43,7 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         worldRenderer.render(lerpWeight);
-
+        firstPersonrenderer.render();
         glfwSwapBuffers(window);
     }
 }

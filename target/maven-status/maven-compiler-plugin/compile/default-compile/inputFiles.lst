@@ -4,6 +4,8 @@
 /home/javidan/Mineclone/src/main/java/com/mineclone/ShaderHelper.java
 /home/javidan/Mineclone/src/main/java/com/mineclone/game/engine/world/Entity/AABB.java
 /home/javidan/Mineclone/src/main/java/com/mineclone/game/engine/world/WorldGen.java
+/home/javidan/Mineclone/src/main/java/com/mineclone/game/renderer/Mesh.java
+/home/javidan/Mineclone/src/main/java/com/mineclone/game/renderer/FirstPersonRenderer.java
 /home/javidan/Mineclone/src/main/java/com/mineclone/game/engine/world/Entity/LiveEntity.java
 /home/javidan/Mineclone/src/main/java/com/mineclone/game/engine/world/World.java
 /home/javidan/Mineclone/src/main/java/com/mineclone/game/InputController.java

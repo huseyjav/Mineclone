@@ -36,23 +36,12 @@ public class WorldRenderer {
         world.chunkManager.setRenderer(this);
     }
     Map<World.ChunkPos, MeshState> meshMap = new HashMap<>();
-    class MeshState{
-        int VAO;
-        int VBO;
-        int EBO;
-        Chunk.Mesh lastMesh;
-        public MeshState(int VAO, int VBO, int EBO, Chunk.Mesh mesh){
-            this.VAO = VAO;
-            this.VBO = VBO;
-            this.EBO = EBO;
-            lastMesh = mesh;
-        }
-    }
+
     void uploadChunk(World.ChunkPos pos, Chunk chunk){
         if(chunk == null) throw new IllegalArgumentException("chunk can not be null");
         // load VBO
 
-        Chunk.Mesh currentMesh = chunk.getMesh();
+        Mesh currentMesh = chunk.getMesh();
         MeshState lastMeshState = meshMap.get(pos);
         if(lastMeshState == null){
             int VAO = glGenVertexArrays();
