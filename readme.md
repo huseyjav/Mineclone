@@ -16,3 +16,4 @@ but they will be cleaned up once project progresses little bit more
 - Change data type of chunk meshes to avoid copying when creating a GPU buffer
 - Implement ray tracing function for attacking etc.
 - Implement event bus to decouple ChunkManager and Renderer
+- Hand use animation
